@@ -5,7 +5,6 @@ import { X, Phone, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/hooks/use-toast"
 
 export function LeadPopup() {
   const [isOpen, setIsOpen] = useState(false)
@@ -17,7 +16,6 @@ export function LeadPopup() {
     message: ""
   })
   const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
 
   // Показываем плашку через 3 секунды после загрузки страницы
   useEffect(() => {
@@ -43,19 +41,11 @@ export function LeadPopup() {
 
       if (response.ok) {
         setIsSubmitted(true)
-        toast({
-          title: "Заявка отправлена!",
-          description: "Мы свяжемся с вами в ближайшее время.",
-        })
       } else {
         throw new Error("Ошибка отправки")
       }
     } catch (error) {
-      toast({
-        title: "Ошибка",
-        description: "Не удалось отправить заявку. Попробуйте позже.",
-        variant: "destructive",
-      })
+      console.error("Ошибка отправки заявки:", error)
     } finally {
       setIsLoading(false)
     }
