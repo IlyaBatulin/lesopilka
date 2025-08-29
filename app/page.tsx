@@ -4,6 +4,7 @@ import HomeCategories from "@/components/home/home-categories"
 import HomeProducts from "@/components/home/home-products"
 import HomeCta from "@/components/home/home-cta"
 import HomeTestimonials from "@/components/home/home-testimonials"
+import { LeadPopup } from "@/components/lead-popup"
 import { Suspense } from "react"
 import Empty from "@/components/home/empty"
 
@@ -68,6 +69,9 @@ export default function Home() {
 
       {/* CTA Section */}
       <HomeCta />
+
+      {/* Всплывающая плашка для заявок */}
+      <LeadPopup />
     </div>
   )
 }
