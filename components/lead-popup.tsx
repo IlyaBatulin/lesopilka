@@ -41,11 +41,13 @@ export function LeadPopup() {
 
       if (response.ok) {
         setIsSubmitted(true)
+        alert("Заявка отправлена! Мы свяжемся с вами в ближайшее время.")
       } else {
         throw new Error("Ошибка отправки")
       }
     } catch (error) {
       console.error("Ошибка отправки заявки:", error)
+      alert("Ошибка отправки заявки. Попробуйте позже или свяжитесь с нами по телефону.")
     } finally {
       setIsLoading(false)
     }
