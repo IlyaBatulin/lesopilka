@@ -80,7 +80,7 @@ export function AddToCartButton({ product, onClick, className = "", showQuantity
         </>
       ) : (
         <>
-          <ShoppingCart className="h-4 w-4 mr-2" />{noPrice ? "В корзину (цена уточняется)" : "В корзину"}
+          <ShoppingCart className="h-4 w-4 mr-2" />{noPrice ? "Уточнить цену" : "В корзину"}
         </>
       )}
     </Button>
