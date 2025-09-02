@@ -101,7 +101,20 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
           
           <div className="mt-auto mb-2 text-right">
             <p className="text-base font-semibold">
-              {product.price} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
+              {product.price && product.price > 0 ? (
+                <>
+                  {product.price} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
+                </>
+              ) : (
+                <span className="text-sm text-gray-500">Цена по запросу</span>
+              )}
+              {product.price && product.price > 0 ? (
+                <>
+                  {product.price} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
+                </>
+              ) : (
+                <span className="text-sm text-gray-500">Цена по запросу</span>
+              )}
             </p>
           </div>
           

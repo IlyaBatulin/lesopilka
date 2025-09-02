@@ -31,7 +31,9 @@ export function AddToCartButton({ product, onClick, className = "", showQuantity
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // Предотвращаем переход по ссылке
     e.stopPropagation(); // Останавливаем всплытие события
-    addToCart(product)
+    // Разрешаем добавление даже если цена отсутствует (будет 0 => "цена уточняется")
+    const safeProduct = { ...product, price: (product.price ?? 0) }
+    addToCart(safeProduct)
 
     // Показываем индикатор успешного добавления на короткое время
     setIsAdded(true)
@@ -67,6 +69,8 @@ export function AddToCartButton({ product, onClick, className = "", showQuantity
     )
   }
 
+  const noPrice = !product.price || product.price <= 0
+
   return (
     <Button onClick={handleAddToCart} className={`bg-green-600 hover:bg-green-700 ${className}`} disabled={isAdded}>
       {isAdded ? (
@@ -76,7 +80,7 @@ export function AddToCartButton({ product, onClick, className = "", showQuantity
         </>
       ) : (
         <>
-          <ShoppingCart className="h-4 w-4 mr-2" />В корзину
+          <ShoppingCart className="h-4 w-4 mr-2" />{noPrice ? "В корзину (цена уточняется)" : "В корзину"}
         </>
       )}
     </Button>
