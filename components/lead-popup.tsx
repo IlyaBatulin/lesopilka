@@ -133,7 +133,7 @@ export function LeadPopup() {
               <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
                 <div className="flex items-center">
                   <Phone size={16} className="mr-1" />
-                  <span>+7 (495) 123-45-67</span>
+                  <span>+7 (495) 077-97-79</span>
                 </div>
                 <div className="flex items-center">
                   <Mail size={16} className="mr-1" />
