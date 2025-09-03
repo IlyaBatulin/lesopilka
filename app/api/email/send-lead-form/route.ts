@@ -12,26 +12,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Используем Gmail SMTP как fallback, если не настроены другие SMTP
-    const host = process.env.SMTP_HOST || "smtp.gmail.com"
-    const port = Number(process.env.SMTP_PORT || 587)
-    const user = process.env.SMTP_USER
-    const pass = process.env.SMTP_PASS
-    const to = process.env.SMTP_TO || user
+    // Используем те же переменные, что и другие API роуты
+    const user = process.env.NEXT_PUBLIC_NODEMAILER_USER
+    const pass = process.env.NEXT_PUBLIC_NODEMAILER_PASSWORD
+    const to = process.env.NEXT_PUBLIC_NODEMAILER_TARGET
 
-    console.log("SMTP настройки:", { host, port, user: user ? "***" : "не задан", pass: pass ? "***" : "не задан", to })
+    console.log("SMTP настройки:", { user: user ? "***" : "не задан", pass: pass ? "***" : "не задан", to })
 
-    if (!user || !pass) {
+    if (!user || !pass || !to) {
       return NextResponse.json(
-        { error: "SMTP не настроен: отсутствуют SMTP_USER или SMTP_PASS" },
+        { error: "SMTP не настроен: отсутствуют переменные NODEMAILER" },
         { status: 500 }
       )
     }
 
     const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
+      service: 'gmail',
       auth: { user, pass },
     })
 
