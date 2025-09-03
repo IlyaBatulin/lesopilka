@@ -18,9 +18,18 @@ export async function POST(request: NextRequest) {
     const pass = process.env.SMTP_PASS
     const to = process.env.SMTP_TO || user
 
+    console.log("SMTP настройки:", { host, port, user: user ? "***" : "не задан", pass: pass ? "***" : "не задан", to })
+
     if (!host || !port || !user || !pass || !to) {
+      const missingVars = []
+      if (!host) missingVars.push("SMTP_HOST")
+      if (!port) missingVars.push("SMTP_PORT")
+      if (!user) missingVars.push("SMTP_USER")
+      if (!pass) missingVars.push("SMTP_PASS")
+      if (!to) missingVars.push("SMTP_TO")
+      
       return NextResponse.json(
-        { error: "SMTP не настроен на сервере" },
+        { error: `SMTP не настроен: отсутствуют ${missingVars.join(", ")}` },
         { status: 500 }
       )
     }
@@ -32,6 +41,18 @@ export async function POST(request: NextRequest) {
       auth: { user, pass },
     })
 
+    // Проверяем подключение к SMTP серверу
+    try {
+      await transporter.verify()
+      console.log("SMTP подключение успешно")
+    } catch (verifyError) {
+      console.error("Ошибка проверки SMTP:", verifyError)
+      return NextResponse.json(
+        { error: `Ошибка подключения к SMTP серверу: ${verifyError.message}` },
+        { status: 500 }
+      )
+    }
+
     const html = `
       <h2>Новая заявка с сайта vyborplus.ru</h2>
       <p><strong>Имя:</strong> ${name}</p>
@@ -42,18 +63,19 @@ export async function POST(request: NextRequest) {
       <p style="color:#666;font-size:12px">${new Date().toLocaleString("ru-RU")}</p>
     `
 
-    await transporter.sendMail({
+    const result = await transporter.sendMail({
       from: `Заявка с сайта <${user}>`,
       to,
       subject: `Заявка с сайта: ${name}`,
       html,
     })
 
+    console.log("Email отправлен:", result.messageId)
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Ошибка отправки заявки:", error)
     return NextResponse.json(
-      { error: "Ошибка отправки заявки" },
+      { error: `Ошибка отправки заявки: ${error.message}` },
       { status: 500 }
     )
   }

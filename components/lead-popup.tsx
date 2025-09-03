@@ -39,15 +39,18 @@ export function LeadPopup() {
         body: JSON.stringify(formData),
       })
 
+      const data = await response.json()
+
       if (response.ok) {
         setIsSubmitted(true)
         alert("Заявка отправлена! Мы свяжемся с вами в ближайшее время.")
       } else {
-        throw new Error("Ошибка отправки")
+        throw new Error(data.error || "Ошибка отправки")
       }
     } catch (error) {
       console.error("Ошибка отправки заявки:", error)
-      alert("Ошибка отправки заявки. Попробуйте позже или свяжитесь с нами по телефону.")
+      const errorMessage = error instanceof Error ? error.message : "Неизвестная ошибка"
+      alert(`Ошибка отправки заявки: ${errorMessage}. Попробуйте позже или свяжитесь с нами по телефону.`)
     } finally {
       setIsLoading(false)
     }
