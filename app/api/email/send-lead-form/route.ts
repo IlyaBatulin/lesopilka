@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const host = process.env.SMTP_HOST
+    // Используем Gmail SMTP как fallback, если не настроены другие SMTP
+    const host = process.env.SMTP_HOST || "smtp.gmail.com"
     const port = Number(process.env.SMTP_PORT || 587)
     const user = process.env.SMTP_USER
     const pass = process.env.SMTP_PASS
@@ -20,16 +21,9 @@ export async function POST(request: NextRequest) {
 
     console.log("SMTP настройки:", { host, port, user: user ? "***" : "не задан", pass: pass ? "***" : "не задан", to })
 
-    if (!host || !port || !user || !pass || !to) {
-      const missingVars = []
-      if (!host) missingVars.push("SMTP_HOST")
-      if (!port) missingVars.push("SMTP_PORT")
-      if (!user) missingVars.push("SMTP_USER")
-      if (!pass) missingVars.push("SMTP_PASS")
-      if (!to) missingVars.push("SMTP_TO")
-      
+    if (!user || !pass) {
       return NextResponse.json(
-        { error: `SMTP не настроен: отсутствуют ${missingVars.join(", ")}` },
+        { error: "SMTP не настроен: отсутствуют SMTP_USER или SMTP_PASS" },
         { status: 500 }
       )
     }
