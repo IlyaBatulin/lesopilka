@@ -82,9 +82,6 @@ export default function LoginPage() {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="text-center text-sm text-gray-500">
-          <p className="w-full">По умолчанию: логин - admin, пароль - admin123</p>
-        </CardFooter>
       </Card>
     </div>
   )
