@@ -22,15 +22,20 @@ export function useLumberCategory() {
       if (product.category_id === LUMBER_CATEGORY_ID) {
         return true
       }
-      
+
       // Проверка через объект категории, если он есть
       if (product.category) {
-        return isLumberCategory(product.category)
+        if (isLumberCategory(product.category)) return true
       }
-      
+
+      // Дополнительная эвристика по названию
+      const name = (product.name || "").toLowerCase()
+      const lumberKeywords = ["доска", "брус", "брусок", "рейка", "вагонка", "строганая", "обрезная", "погонаж"]
+      if (lumberKeywords.some(k => name.includes(k))) return true
+
       return false
     }
-  }, [])
+  }, [isLumberCategory])
 
   /**
    * Проверяет, является ли категория пиломатериалами или их подкатегорией

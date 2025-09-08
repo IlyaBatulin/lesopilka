@@ -35,12 +35,14 @@ interface ProductPageClientProps {
 }
 
 export function ProductPageClient({ product, relatedProducts, breadcrumbs }: ProductPageClientProps) {
-  const { isLumberProduct, supportsCubicPricing } = useLumberCategory()
+  const { isLumberProduct } = useLumberCategory()
   const { getPrice } = useLumberPriceCalculation()
   const { priceUnit, handleUnitChange } = useLumberPriceToggle("piece")
 
   const isLumber = isLumberProduct(product)
-  const showPriceToggle = isLumber && supportsCubicPricing(product)
+  const piecePriceInfo = getPrice(product, "piece")
+  const cubicPriceInfo = getPrice(product, "cubic")
+  const showPriceToggle = isLumber && !!piecePriceInfo && !!cubicPriceInfo
 
   // Получаем актуальную цену в зависимости от выбранной единицы
   const currentPriceInfo = getPrice(product, priceUnit)
