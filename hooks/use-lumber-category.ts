@@ -3,9 +3,8 @@
 import { useMemo } from "react"
 import { Product, Category } from "@/lib/types"
 
-// ID основной категории "Пиломатериалы"
-// ВАЖНО: замените ID на реальный id категории "Пиломатериалы" из вашей БД
-const LUMBER_CATEGORY_ID = 1
+// ID категорий пиломатериалов
+const LUMBER_CATEGORY_IDS = [93, 94, 95, 96, 67, 56, 57, 58, 59, 60, 61, 62, 27]
 
 /**
  * Хук для определения принадлежности товара к категории пиломатериалов
@@ -18,11 +17,11 @@ export function useLumberCategory() {
    */
   const isLumberProduct = useMemo(() => {
     return (product: Product): boolean => {
-      // Прямая проверка категории товара
-      if (product.category_id === LUMBER_CATEGORY_ID) {
+      // Проверяем, входит ли категория товара в список пиломатериалов
+      if (LUMBER_CATEGORY_IDS.includes(product.category_id)) {
         return true
       }
-
+      
       // Проверка через объект категории, если он есть
       if (product.category) {
         if (isLumberCategory(product.category)) return true
@@ -44,19 +43,16 @@ export function useLumberCategory() {
    */
   const isLumberCategory = useMemo(() => {
     return (category: Category): boolean => {
-      // Если это основная категория пиломатериалов
-      if (category.id === LUMBER_CATEGORY_ID) {
+      // Если это категория пиломатериалов
+      if (LUMBER_CATEGORY_IDS.includes(category.id)) {
         return true
       }
       
       // Если это подкатегория пиломатериалов
-      if (category.parent_id === LUMBER_CATEGORY_ID) {
+      if (category.parent_id && LUMBER_CATEGORY_IDS.includes(category.parent_id)) {
         return true
       }
       
-      // Проверяем уровень глубже (может быть подподкатегория)
-      // Для этого нужно рекурсивно проверять родительские категории
-      // В рамках текущей задачи ограничимся двумя уровнями
       return false
     }
   }, [])
@@ -76,6 +72,6 @@ export function useLumberCategory() {
     isLumberProduct,
     isLumberCategory,
     supportsCubicPricing,
-    LUMBER_CATEGORY_ID
+    LUMBER_CATEGORY_IDS
   }
 }
