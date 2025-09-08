@@ -4,6 +4,7 @@ import { useMemo } from "react"
 import { Product, Category } from "@/lib/types"
 
 // ID основной категории "Пиломатериалы"
+// ВАЖНО: замените ID на реальный id категории "Пиломатериалы" из вашей БД
 const LUMBER_CATEGORY_ID = 1
 
 /**
