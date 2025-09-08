@@ -14,6 +14,7 @@ export interface Product {
   name: string
   description: string | null
   price: number
+  price_per_cubic?: number | null // Цена за кубический метр для пиломатериалов
   image_url: string | null
   category_id: number
   unit: string

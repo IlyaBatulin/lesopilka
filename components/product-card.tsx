@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge"
 import { ExternalLink, ShoppingCart } from "lucide-react"
 import type { Product } from "@/lib/types"
 import { AddToCartButton } from "@/components/add-to-cart-button"
+import { LumberPriceToggle, useLumberPriceToggle, PriceUnit } from "@/components/lumber-price-toggle"
+import { useLumberCategory } from "@/hooks/use-lumber-category"
+import { useLumberPriceCalculation } from "@/hooks/use-lumber-price-calculation"
 
 interface ProductCardProps {
   product: Product
@@ -15,14 +18,24 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
+  const { isLumberProduct, supportsCubicPricing } = useLumberCategory()
+  const { getPrice, formatPrice } = useLumberPriceCalculation()
+  const { priceUnit, handleUnitChange } = useLumberPriceToggle("piece")
+
+  const isLumber = isLumberProduct(product)
+  const showPriceToggle = isLumber && supportsCubicPricing(product)
+
+  // Получаем актуальную цену в зависимости от выбранной единицы
+  const currentPriceInfo = getPrice(product, priceUnit)
+
   // Подготавливаем продукт для корзины
   const cartProduct = {
     id: product.id,
     name: product.name,
-    price: product.price,
+    price: currentPriceInfo?.price || product.price,
     image_url: product.image_url,
     quantity: 1,
-    unit: product.unit || "шт",
+    unit: currentPriceInfo?.displayUnit || product.unit || "шт",
     category_id: product.category_id,
   }
 
@@ -58,10 +71,23 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
             </p>
             
             <div className="mt-auto mb-3">
+              {showPriceToggle && (
+                <div className="mb-2 flex justify-end">
+                  <LumberPriceToggle 
+                    selectedUnit={priceUnit}
+                    onUnitChange={handleUnitChange}
+                    size="sm"
+                  />
+                </div>
+              )}
               <div className="font-semibold text-right text-lg">
-                {product.price && product.price > 0 ? (
+                {currentPriceInfo && currentPriceInfo.price > 0 ? (
                   <>
-                    {product.price} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
+                    {currentPriceInfo.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{currentPriceInfo.displayUnit}</span>
+                  </>
+                ) : product.price && product.price > 0 ? (
+                  <>
+                    {product.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
                   </>
                 ) : (
                   <span className="text-sm text-gray-500">Цена по запросу</span>
@@ -73,6 +99,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
               <AddToCartButton 
                 product={cartProduct} 
                 className="w-auto"
+                onClick={(e) => e.stopPropagation()}
               />
             </div>
           </div>
@@ -105,24 +132,39 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
             {product.name}
           </h3>
           
-          <div className="mt-auto mb-2 text-right">
-            <p className="text-base font-semibold">
-              {product.price && product.price > 0 ? (
-                <>
-                  {product.price} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
-                </>
-              ) : (
-                <span className="text-sm text-gray-500">Цена по запросу</span>
-              )}
-            </p>
-          </div>
-          
-          <div className="flex justify-end">
-            <AddToCartButton 
-              product={cartProduct} 
-              className="w-auto h-9 text-sm"
-              onClick={(e) => e.stopPropagation()}
-            />
+          <div className="mt-auto">
+            {showPriceToggle && (
+              <div className="mb-1 flex justify-end">
+                <LumberPriceToggle 
+                  selectedUnit={priceUnit}
+                  onUnitChange={handleUnitChange}
+                  size="sm"
+                />
+              </div>
+            )}
+            <div className="mb-2 text-right">
+              <p className="text-base font-semibold">
+                {currentPriceInfo && currentPriceInfo.price > 0 ? (
+                  <>
+                    {currentPriceInfo.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{currentPriceInfo.displayUnit}</span>
+                  </>
+                ) : product.price && product.price > 0 ? (
+                  <>
+                    {product.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
+                  </>
+                ) : (
+                  <span className="text-sm text-gray-500">Цена по запросу</span>
+                )}
+              </p>
+            </div>
+            
+            <div className="flex justify-end">
+              <AddToCartButton 
+                product={cartProduct} 
+                className="w-auto h-9 text-sm"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
           </div>
         </div>
       </Card>
