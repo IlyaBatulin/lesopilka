@@ -109,14 +109,14 @@ export function useLumberPriceCalculation() {
 
     if (unit === "piece") {
       if (product.price > 0) {
-        return { price: product.price, displayUnit: product.unit || "шт" }
+        return { price: product.price, displayUnit: "шт" }
       }
 
       // Если цены за штуку нет, но есть цена за куб и размеры — конвертируем
       if ((product.price_per_cubic || 0) > 0 && dimensions) {
         const volume = calculateVolume(dimensions)
         const piecePrice = (product.price_per_cubic || 0) * volume
-        return { price: piecePrice, displayUnit: product.unit || "шт" }
+        return { price: piecePrice, displayUnit: "шт" }
       }
 
       return null

@@ -150,7 +150,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
                   </>
                 ) : product.price && product.price > 0 ? (
                   <>
-                    {product.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{product.unit}</span>
+                    {product.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{isLumber ? "шт" : (product.unit || "шт")}</span>
                   </>
                 ) : (
                   <span className="text-sm text-gray-500">Цена по запросу</span>
