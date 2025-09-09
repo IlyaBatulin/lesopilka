@@ -75,12 +75,23 @@ export default function DynamicFilterSidebar({
       const characteristicsFilters: Record<string, string[]> = {}
       Object.entries(characteristicsMap).forEach(([key, valueSet]) => {
         const arr = Array.from(valueSet)
-        // Проверяем, все ли значения числа
-        const allNumbers = arr.every(v => /^-?\d+(\.\d+)?$/.test(v))
-        if (allNumbers) {
-          arr.sort((a, b) => Number(a) - Number(b))
+        
+        // Специальная сортировка для толщины (числовая)
+        if (key === "Толщина") {
+          arr.sort((a, b) => {
+            // Извлекаем числовое значение из строки типа "24 мм"
+            const numA = parseFloat(a.replace(/[^\d.,]/g, "").replace(",", "."))
+            const numB = parseFloat(b.replace(/[^\d.,]/g, "").replace(",", "."))
+            return numA - numB
+          })
         } else {
-          arr.sort()
+          // Проверяем, все ли значения числа
+          const allNumbers = arr.every(v => /^-?\d+(\.\d+)?$/.test(v))
+          if (allNumbers) {
+            arr.sort((a, b) => Number(a) - Number(b))
+          } else {
+            arr.sort()
+          }
         }
         characteristicsFilters[key] = arr
       })
