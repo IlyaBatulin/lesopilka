@@ -80,7 +80,7 @@ export default function Contacts() {
       <div className="container mx-auto px-4 pt-12 pb-16">
         <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-4">Контакты</h1>
         <p className="text-center text-green-100 mb-12 max-w-2xl mx-auto">
-          Свяжитесь с нами любым удобным способом, и мы ответим на все ваши вопросы
+          Свяжитесь с нами любым удобным способом, и мы ответим на все ваши вопросы.
         </p>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
