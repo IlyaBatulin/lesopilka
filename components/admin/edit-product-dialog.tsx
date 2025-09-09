@@ -31,6 +31,7 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
   const [categoryId, setCategoryId] = useState(product.category_id.toString())
   const [unit, setUnit] = useState(product.unit)
   const [stock, setStock] = useState(product.stock.toString())
+  const [thickness, setThickness] = useState(product.thickness?.toString() || "")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -128,6 +129,7 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
         category_id: Number.parseInt(categoryId),
         unit,
         stock: Number.parseInt(stock),
+        thickness: thickness ? Number.parseInt(thickness) : null,
         characteristics,
       })
 
@@ -273,7 +275,7 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-stock">Количество на складе</Label>
                   <Input
@@ -283,6 +285,19 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                     required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="edit-thickness">Толщина (мм)</Label>
+                  <Input
+                    id="edit-thickness"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={thickness}
+                    onChange={(e) => setThickness(e.target.value)}
+                    placeholder="4-24"
                   />
                 </div>
 

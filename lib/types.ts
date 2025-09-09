@@ -19,6 +19,7 @@ export interface Product {
   category_id: number
   unit: string
   stock: number
+  thickness?: number | null // Толщина в мм для сортировки
   created_at: string
   updated_at: string
   category?: Category

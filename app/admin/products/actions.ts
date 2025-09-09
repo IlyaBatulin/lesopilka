@@ -11,6 +11,7 @@ interface ProductInput {
   category_id: number
   unit: string
   stock: number
+  thickness?: number | null
   characteristics: Record<string, any>
 }
 
@@ -44,6 +45,7 @@ export async function updateProduct(product: ProductUpdateInput) {
       category_id: product.category_id,
       unit: product.unit,
       stock: product.stock,
+      thickness: product.thickness,
       characteristics: product.characteristics,
       updated_at: new Date().toISOString(),
     })
