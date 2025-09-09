@@ -80,7 +80,19 @@ export default function ModernFilterSidebar({
       // Convert Sets to Arrays
       const characteristicsFilters: Record<string, string[]> = {}
       Object.entries(characteristicsMap).forEach(([key, valueSet]) => {
-        characteristicsFilters[key] = Array.from(valueSet).sort()
+        const values = Array.from(valueSet)
+        
+        // Специальная сортировка для толщины (числовая)
+        if (key === "Толщина") {
+          characteristicsFilters[key] = values.sort((a, b) => {
+            // Извлекаем числовое значение из строки типа "24 мм"
+            const numA = parseFloat(a.replace(/[^\d.,]/g, "").replace(",", "."))
+            const numB = parseFloat(b.replace(/[^\d.,]/g, "").replace(",", "."))
+            return numA - numB
+          })
+        } else {
+          characteristicsFilters[key] = values.sort()
+        }
       })
 
       setAvailableCharacteristics(Array.from(characteristicKeys).sort())
