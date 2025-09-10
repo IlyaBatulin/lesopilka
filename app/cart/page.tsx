@@ -242,7 +242,10 @@ export default function CartPage() {
                       {item.product.name}
                     </Link>
                     <p className="text-gray-500 text-sm">
-                      {item.product.price.toLocaleString()} ₽/{item.product.unit}
+                      {item.product.price && item.product.price > 0
+                        ? `${item.product.price.toLocaleString()} ₽/${item.product.unit}`
+                        : "Цена по запросу"
+                      }
                     </p>
                   </div>
 
@@ -277,7 +280,10 @@ export default function CartPage() {
                     </div>
 
                     <span className="font-medium min-w-[7rem] text-right">
-                      {(item.product.price * item.quantity).toLocaleString()} ₽
+                      {item.product.price && item.product.price > 0
+                        ? `${(item.product.price * item.quantity).toLocaleString()} ₽`
+                        : "Цена по запросу"
+                      }
                     </span>
 
                     <Button
@@ -301,12 +307,12 @@ export default function CartPage() {
             <h2 className="font-semibold mb-4">Итого</h2>
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Товары ({items.length}):</span>
-              <span>{totalPrice.toLocaleString()} ₽</span>
+              <span>{totalPrice && totalPrice > 0 ? totalPrice.toLocaleString() : "0"} ₽</span>
             </div>
             <div className="border-t border-gray-100 my-4"></div>
             <div className="flex justify-between font-bold text-lg">
               <span>Общая сумма:</span>
-              <span>{totalPrice.toLocaleString()} ₽</span>
+              <span>{totalPrice && totalPrice > 0 ? totalPrice.toLocaleString() : "0"} ₽</span>
             </div>
           </div>
 

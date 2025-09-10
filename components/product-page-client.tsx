@@ -217,7 +217,10 @@ export function ProductPageClient({ product, relatedProducts, breadcrumbs }: Pro
                 <div className="p-4">
                   <h3 className="font-medium line-clamp-2 mb-2">{relatedProduct.name}</h3>
                   <p className="text-lg font-bold">
-                    {relatedProduct.price.toLocaleString("ru-RU")} ₽
+                    {relatedProduct.price && relatedProduct.price > 0
+                      ? `${relatedProduct.price.toLocaleString("ru-RU")} ₽`
+                      : "Цена по запросу"
+                    }
                     <span className="text-sm font-normal text-gray-500">/{relatedProduct.unit}</span>
                   </p>
                 </div>

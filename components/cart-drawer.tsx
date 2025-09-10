@@ -54,7 +54,10 @@ export function CartDrawer() {
                     </div>
 
                     <p className="text-sm text-gray-500">
-                      {item.product.price.toLocaleString()} ₽/{item.product.unit}
+                      {item.product.price && item.product.price > 0
+                        ? `${item.product.price.toLocaleString()} ₽/${item.product.unit}`
+                        : "Цена по запросу"
+                      }
                     </p>
 
                     <div className="flex items-center justify-between mt-2">
@@ -88,7 +91,10 @@ export function CartDrawer() {
                       </div>
 
                       <span className="font-medium text-sm">
-                        {(item.product.price * item.quantity).toLocaleString()} ₽
+                        {item.product.price && item.product.price > 0
+                          ? `${(item.product.price * item.quantity).toLocaleString()} ₽`
+                          : "Цена по запросу"
+                        }
                       </span>
                     </div>
                   </div>
