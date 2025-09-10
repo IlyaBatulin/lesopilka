@@ -17,17 +17,26 @@ export function useLumberCategory() {
    */
   const isLumberCategory = useMemo(() => {
     return (category: Category): boolean => {
-      // Если это категория пиломатериалов
-      if (LUMBER_CATEGORY_IDS.includes(category.id)) {
-        return true
+      try {
+        if (!category || typeof category !== 'object') {
+          return false
+        }
+        
+        // Если это категория пиломатериалов
+        if (category.id && LUMBER_CATEGORY_IDS.includes(category.id)) {
+          return true
+        }
+        
+        // Если это подкатегория пиломатериалов
+        if (category.parent_id && LUMBER_CATEGORY_IDS.includes(category.parent_id)) {
+          return true
+        }
+        
+        return false
+      } catch (error) {
+        console.error('Ошибка в isLumberCategory:', error, 'category:', category)
+        return false
       }
-      
-      // Если это подкатегория пиломатериалов
-      if (category.parent_id && LUMBER_CATEGORY_IDS.includes(category.parent_id)) {
-        return true
-      }
-      
-      return false
     }
   }, [])
 
@@ -38,22 +47,31 @@ export function useLumberCategory() {
    */
   const isLumberProduct = useMemo(() => {
     return (product: Product): boolean => {
-      // Проверяем, входит ли категория товара в список пиломатериалов
-      if (LUMBER_CATEGORY_IDS.includes(product.category_id)) {
-        return true
-      }
-      
-      // Проверка через объект категории, если он есть
-      if (product.category) {
-        if (isLumberCategory(product.category)) return true
-      }
+      try {
+        if (!product || typeof product !== 'object') {
+          return false
+        }
 
-      // Дополнительная эвристика по названию
-      const name = (product.name || "").toLowerCase()
-      const lumberKeywords = ["доска", "брус", "брусок", "рейка", "вагонка", "строганая", "обрезная", "погонаж"]
-      if (lumberKeywords.some(k => name.includes(k))) return true
+        // Проверяем, входит ли категория товара в список пиломатериалов
+        if (product.category_id && LUMBER_CATEGORY_IDS.includes(product.category_id)) {
+          return true
+        }
+        
+        // Проверка через объект категории, если он есть
+        if (product.category) {
+          if (isLumberCategory(product.category)) return true
+        }
 
-      return false
+        // Дополнительная эвристика по названию
+        const name = (product.name || "").toLowerCase()
+        const lumberKeywords = ["доска", "брус", "брусок", "рейка", "вагонка", "строганая", "обрезная", "погонаж"]
+        if (lumberKeywords.some(k => name.includes(k))) return true
+
+        return false
+      } catch (error) {
+        console.error('Ошибка в isLumberProduct:', error, 'product:', product)
+        return false
+      }
     }
   }, [isLumberCategory])
 

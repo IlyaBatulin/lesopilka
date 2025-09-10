@@ -102,44 +102,53 @@ export function useLumberPriceCalculation() {
    * Получает цену товара в зависимости от выбранной единицы измерения
    */
   const getPrice = useCallback((product: Product, unit: PriceUnit): { price: number; displayUnit: string } | null => {
-    // Попытка извлечь размеры для конверсии
-    const dimensionsFromName = extractDimensionsFromName(product.name)
-    const dimensionsFromChar = extractDimensionsFromCharacteristics(product.characteristics || {})
-    const dimensions = dimensionsFromName || dimensionsFromChar
-
-    if (unit === "piece") {
-      if (product.price > 0) {
-        return { price: product.price, displayUnit: "шт" }
+    try {
+      if (!product || typeof product !== 'object') {
+        return null
       }
 
-      // Если цены за штуку нет, но есть цена за куб и размеры — конвертируем
-      if ((product.price_per_cubic || 0) > 0 && dimensions) {
-        const volume = calculateVolume(dimensions)
-        const piecePrice = (product.price_per_cubic || 0) * volume
-        return { price: piecePrice, displayUnit: "шт" }
-      }
+      // Попытка извлечь размеры для конверсии
+      const dimensionsFromName = extractDimensionsFromName(product.name || '')
+      const dimensionsFromChar = extractDimensionsFromCharacteristics(product.characteristics || {})
+      const dimensions = dimensionsFromName || dimensionsFromChar
 
-      return null
-    }
-
-    if (unit === "cubic") {
-      if ((product.price_per_cubic || 0) > 0) {
-        return { price: product.price_per_cubic as number, displayUnit: "м³" }
-      }
-
-      // Если цены за куб нет, но есть цена за штуку и размеры — конвертируем
-      if ((product.price || 0) > 0 && dimensions) {
-        const volume = calculateVolume(dimensions)
-        if (volume > 0) {
-          const cubicPrice = product.price / volume
-          return { price: cubicPrice, displayUnit: "м³" }
+      if (unit === "piece") {
+        if (product.price && product.price > 0) {
+          return { price: product.price, displayUnit: "шт" }
         }
+
+        // Если цены за штуку нет, но есть цена за куб и размеры — конвертируем
+        if ((product.price_per_cubic || 0) > 0 && dimensions) {
+          const volume = calculateVolume(dimensions)
+          const piecePrice = (product.price_per_cubic || 0) * volume
+          return { price: piecePrice, displayUnit: "шт" }
+        }
+
+        return null
+      }
+
+      if (unit === "cubic") {
+        if ((product.price_per_cubic || 0) > 0) {
+          return { price: product.price_per_cubic as number, displayUnit: "м³" }
+        }
+
+        // Если цены за куб нет, но есть цена за штуку и размеры — конвертируем
+        if ((product.price || 0) > 0 && dimensions) {
+          const volume = calculateVolume(dimensions)
+          if (volume > 0) {
+            const cubicPrice = product.price / volume
+            return { price: cubicPrice, displayUnit: "м³" }
+          }
+        }
+
+        return null
       }
 
       return null
+    } catch (error) {
+      console.error('Ошибка в getPrice:', error, 'product:', product, 'unit:', unit)
+      return null
     }
-
-    return null
   }, [extractDimensionsFromName, extractDimensionsFromCharacteristics, calculateVolume])
 
   /**
