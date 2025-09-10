@@ -81,7 +81,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
                 </div>
               )}
               <div className="font-semibold text-right text-lg">
-                {currentPriceInfo && currentPriceInfo.price > 0 ? (
+                {currentPriceInfo && currentPriceInfo.price && currentPriceInfo.price > 0 ? (
                   <>
                     {currentPriceInfo.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{currentPriceInfo.displayUnit}</span>
                   </>
@@ -149,7 +149,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
             )}
             <div className="mb-2 text-right">
               <p className="text-base font-semibold">
-                {currentPriceInfo && currentPriceInfo.price > 0 ? (
+                {currentPriceInfo && currentPriceInfo.price && currentPriceInfo.price > 0 ? (
                   <>
                     {currentPriceInfo.price.toLocaleString("ru-RU")} ₽<span className="text-xs font-normal text-gray-500">/{currentPriceInfo.displayUnit}</span>
                   </>

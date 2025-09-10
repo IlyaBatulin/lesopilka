@@ -190,7 +190,10 @@ export function useLumberPriceCalculation() {
   /**
    * Форматирует цену для отображения
    */
-  const formatPrice = useCallback((price: number, unit: string): string => {
+  const formatPrice = useCallback((price: number | null, unit: string): string => {
+    if (!price || price <= 0) {
+      return "Цена по запросу"
+    }
     return `${price.toLocaleString("ru-RU")} ₽/${unit}`
   }, [])
 

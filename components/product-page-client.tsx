@@ -142,7 +142,9 @@ export function ProductPageClient({ product, relatedProducts, breadcrumbs }: Pro
             <span className="text-3xl font-bold">
               {currentPriceInfo && currentPriceInfo.price > 0
                 ? currentPriceInfo.price.toLocaleString("ru-RU")
-                : product.price.toLocaleString("ru-RU")
+                : product.price && product.price > 0
+                ? product.price.toLocaleString("ru-RU")
+                : "Цена по запросу"
               } ₽
             </span>
             <span className="text-gray-500">
