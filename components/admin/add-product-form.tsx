@@ -31,7 +31,6 @@ export default function AddProductForm({ categories }: AddProductFormProps) {
   const [categoryId, setCategoryId] = useState<string>("")
   const [unit, setUnit] = useState("шт")
   const [stock, setStock] = useState("0")
-  const [thickness, setThickness] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -113,11 +112,11 @@ export default function AddProductForm({ categories }: AddProductFormProps) {
         name,
         description: description || null,
         price: Number.parseFloat(price),
+        price_per_cubic: null, // Пока не используем
         image_url: imageUrlToSave || null,
         category_id: Number.parseInt(categoryId),
         unit,
         stock: Number.parseInt(stock),
-        thickness: thickness ? Number.parseInt(thickness) : null,
         characteristics,
       })
 
@@ -255,7 +254,7 @@ export default function AddProductForm({ categories }: AddProductFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="stock">Количество на складе</Label>
               <Input
@@ -265,19 +264,6 @@ export default function AddProductForm({ categories }: AddProductFormProps) {
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
                 required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="thickness">Толщина (мм)</Label>
-              <Input
-                id="thickness"
-                type="number"
-                min="0"
-                step="1"
-                value={thickness}
-                onChange={(e) => setThickness(e.target.value)}
-                placeholder="4-24"
               />
             </div>
 

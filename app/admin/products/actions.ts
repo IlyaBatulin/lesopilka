@@ -7,11 +7,11 @@ interface ProductInput {
   name: string
   description: string | null
   price: number
+  price_per_cubic?: number | null
   image_url: string | null
   category_id: number
   unit: string
   stock: number
-  thickness?: number | null
   characteristics: Record<string, any>
 }
 
@@ -41,11 +41,11 @@ export async function updateProduct(product: ProductUpdateInput) {
       name: product.name,
       description: product.description,
       price: product.price,
+      price_per_cubic: product.price_per_cubic,
       image_url: product.image_url,
       category_id: product.category_id,
       unit: product.unit,
       stock: product.stock,
-      thickness: product.thickness,
       characteristics: product.characteristics,
       updated_at: new Date().toISOString(),
     })
