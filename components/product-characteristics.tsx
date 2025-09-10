@@ -65,6 +65,35 @@ export function ProductCharacteristics({ characteristics, className }: ProductCh
 
 // Вспомогательные функции для форматирования ключей и значений
 function formatKey(key: string): string {
+  // Специальные переводы для английских ключей
+  const translations: Record<string, string> = {
+    'pieces_per_cubic_meter': 'Штук в м³',
+    'pieces per cubic meter': 'Штук в м³',
+    'grade': 'Сорт',
+    'drying': 'Сушка',
+    'wood_type': 'Порода',
+    'size': 'Размер',
+    'standard': 'Стандарт',
+    'thickness': 'Толщина',
+    'width': 'Ширина',
+    'length': 'Длина',
+    'moisture': 'Влажность',
+    'surface_treatment': 'Обработка поверхности',
+    'purpose': 'Назначение'
+  }
+
+  // Проверяем точное совпадение
+  if (translations[key.toLowerCase()]) {
+    return translations[key.toLowerCase()]
+  }
+
+  // Проверяем совпадение с заменой подчеркиваний
+  const normalizedKey = key.replace(/_/g, " ").toLowerCase()
+  if (translations[normalizedKey]) {
+    return translations[normalizedKey]
+  }
+
+  // Если нет перевода, форматируем как обычно
   return key
     .replace(/_/g, " ")
     .split(" ")
