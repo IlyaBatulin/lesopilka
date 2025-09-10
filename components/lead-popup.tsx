@@ -17,11 +17,11 @@ export function LeadPopup() {
   })
   const [isLoading, setIsLoading] = useState(false)
 
-  // Показываем плашку через 3 секунды после загрузки страницы
+  // Показываем плашку через 20 секунд после загрузки страницы
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(true)
-    }, 3000)
+    }, 20000)
 
     return () => clearTimeout(timer)
   }, [])
