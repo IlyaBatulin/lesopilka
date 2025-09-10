@@ -162,7 +162,7 @@ export function ProductPageClient({ product, relatedProducts, breadcrumbs }: Pro
           </div>
 
           {/* Характеристики товара */}
-          {product.characteristics && Object.keys(product.characteristics).length > 0 && (
+          {product.characteristics && typeof product.characteristics === 'object' && Object.keys(product.characteristics).length > 0 && (
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <ProductCharacteristics characteristics={product.characteristics} />
             </div>

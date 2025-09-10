@@ -13,6 +13,11 @@ interface ProductCharacteristicsProps {
 export function ProductCharacteristics({ characteristics, className }: ProductCharacteristicsProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
+  // Проверяем, что characteristics существует и является объектом
+  if (!characteristics || typeof characteristics !== 'object') {
+    return null
+  }
+
   // Фильтруем и сортируем характеристики для отображения
   const displayCharacteristics = Object.entries(characteristics).filter(
     ([key, value]) => value !== null && value !== "",
