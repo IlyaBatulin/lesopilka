@@ -85,12 +85,6 @@ export async function GET(request: Request) {
     case "name-desc":
       query = query.order("name", { ascending: false })
       break
-    case "thickness-asc":
-      query = query.order("thickness", { ascending: true, nullsLast: true })
-      break
-    case "thickness-desc":
-      query = query.order("thickness", { ascending: false, nullsLast: true })
-      break
     default:
       query = query.order("name", { ascending: true })
   }

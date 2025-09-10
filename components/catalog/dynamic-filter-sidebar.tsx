@@ -85,12 +85,12 @@ export default function DynamicFilterSidebar({
             return numA - numB
           })
         } else {
-          // Проверяем, все ли значения числа
-          const allNumbers = arr.every(v => /^-?\d+(\.\d+)?$/.test(v))
-          if (allNumbers) {
-            arr.sort((a, b) => Number(a) - Number(b))
-          } else {
-            arr.sort()
+        // Проверяем, все ли значения числа
+        const allNumbers = arr.every(v => /^-?\d+(\.\d+)?$/.test(v))
+        if (allNumbers) {
+          arr.sort((a, b) => Number(a) - Number(b))
+        } else {
+          arr.sort()
           }
         }
         characteristicsFilters[key] = arr
