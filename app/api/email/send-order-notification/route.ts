@@ -29,8 +29,8 @@ export async function POST(request: Request) {
       <tr>
         <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.product.name}</td>
         <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: center;">${item.quantity}</td>
-        <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">${item.product.price.toLocaleString()} ₽</td>
-        <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">${(item.product.price * item.quantity).toLocaleString()} ₽</td>
+        <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">${item.product.price ? item.product.price.toLocaleString() : 'Цена по запросу'} ₽</td>
+        <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">${item.product.price ? (item.product.price * item.quantity).toLocaleString() : 'Цена по запросу'} ₽</td>
       </tr>
     `).join('');
     
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
               <tfoot>
                 <tr style="font-weight: bold;">
                   <td colspan="3" style="padding: 8px; text-align: right;">Итого:</td>
-                  <td style="padding: 8px; text-align: right;">${orderDetails.totalAmount.toLocaleString()} ₽</td>
+                  <td style="padding: 8px; text-align: right;">${orderDetails.totalAmount ? orderDetails.totalAmount.toLocaleString() : '0'} ₽</td>
                 </tr>
               </tfoot>
             </table>

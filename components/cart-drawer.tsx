@@ -109,7 +109,7 @@ export function CartDrawer() {
             <div className="w-full space-y-4">
               <div className="flex justify-between items-center">
                 <span className="font-medium">Итого:</span>
-                <span className="font-bold text-lg">{totalPrice.toLocaleString()} ₽</span>
+                <span className="font-bold text-lg">{totalPrice && totalPrice > 0 ? totalPrice.toLocaleString() : "0"} ₽</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
