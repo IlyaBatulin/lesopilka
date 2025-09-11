@@ -93,11 +93,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
                   <span className="text-sm text-gray-500">Цена по запросу</span>
                 )}
               </div>
-              {product.stock > 0 && (
-                <div className="text-xs text-gray-500 text-right mt-1">
-                  В наличии: {product.stock} шт.
-                </div>
-              )}
+              {/* Убрано отображение количества в наличии */}
             </div>
             
             <div className="flex justify-end mt-2">
@@ -161,11 +157,7 @@ export default function ProductCard({ product, viewMode = "grid" }: ProductCardP
                   <span className="text-sm text-gray-500">Цена по запросу</span>
                 )}
               </p>
-              {product.stock > 0 && (
-                <p className="text-xs text-gray-500 mt-1">
-                  В наличии: {product.stock} шт.
-                </p>
-              )}
+              {/* Убрано отображение количества в наличии */}
             </div>
             
             <div className="flex justify-end">
