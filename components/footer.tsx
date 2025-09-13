@@ -4,11 +4,16 @@ import Link from "next/link"
 import { MapPin, Phone, Mail } from "lucide-react"
 import { useState, useEffect } from "react"
 import { createClientSupabaseClient } from "@/lib/supabase"
-import { PartialCategory } from "@/lib/types"
+
+type Category = {
+  id: number;
+  name: string;
+  slug?: string;
+}
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
-  const [categories, setCategories] = useState<PartialCategory[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -18,7 +23,7 @@ export default function Footer() {
         const supabase = createClientSupabaseClient()
         
         // Проверяем подключение к Supabase
-        // console.log("Supabase клиент инициализирован:", !!supabase)
+        console.log("Supabase клиент инициализирован:", !!supabase)
         
         try {
           // Получаем основные категории (верхнего уровня)
@@ -30,30 +35,30 @@ export default function Footer() {
             .limit(5)  // Ограничиваем до 5 категорий
           
           if (error) {
-            // console.error("Ошибка Supabase:", error.message, error.code, error.details)
+            console.error("Ошибка Supabase:", error.message, error.code, error.details)
             // Используем фиктивные категории при ошибке
             useFallbackCategories()
             return
           }
           
           if (data && data.length > 0) {
-            // console.log("Загруженные категории:", data)
+            console.log("Загруженные категории:", data)
             const categoriesWithSlug = data.map((category: any) => ({
               ...category,
               slug: category.name.toLowerCase().replace(/\s+/g, '-')
             }));
-            setCategories(categoriesWithSlug as PartialCategory[])
+            setCategories(categoriesWithSlug as Category[])
           } else {
-            // console.log("Категории не найдены или пустой массив")
+            console.log("Категории не найдены или пустой массив")
             // Если категорий нет, используем фиктивные
             useFallbackCategories()
           }
         } catch (supabaseError) {
-          // console.error("Ошибка при выполнении запроса к Supabase:", supabaseError)
+          console.error("Ошибка при выполнении запроса к Supabase:", supabaseError)
           useFallbackCategories()
         }
       } catch (error) {
-        // console.error("Общая ошибка при загрузке категорий:", error)
+        console.error("Общая ошибка при загрузке категорий:", error)
         useFallbackCategories()
       } finally {
         setLoading(false)
@@ -75,9 +80,9 @@ export default function Footer() {
   }, [])
 
   // Проверка наличия категорий для отладки
-  // useEffect(() => {
-  //   console.log("Текущие категории:", categories)
-  // }, [categories])
+  useEffect(() => {
+    console.log("Текущие категории:", categories)
+  }, [categories])
 
   return (
     <footer className="bg-gray-100 pt-10 pb-6">

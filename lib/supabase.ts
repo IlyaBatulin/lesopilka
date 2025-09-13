@@ -22,7 +22,7 @@ export const createClientSupabaseClient = () => {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey) {
-    // console.error("Отсутствуют переменные окружения для Supabase на клиентской стороне")
+    console.error("Отсутствуют переменные окружения для Supabase на клиентской стороне")
     throw new Error("Не удалось инициализировать Supabase клиент")
   }
 
@@ -34,7 +34,7 @@ export const createClientSupabaseClient = () => {
       },
     })
   } catch (error) {
-    // console.error("Ошибка при создании Supabase клиента:", error)
+    console.error("Ошибка при создании Supabase клиента:", error)
     throw new Error("Не удалось создать Supabase клиент")
   }
 

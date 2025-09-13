@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const pass = process.env.NEXT_PUBLIC_NODEMAILER_PASSWORD
     const to = process.env.NEXT_PUBLIC_NODEMAILER_TARGET
 
-    // console.log("SMTP настройки:", { user: user ? "***" : "не задан", pass: pass ? "***" : "не задан", to })
+    console.log("SMTP настройки:", { user: user ? "***" : "не задан", pass: pass ? "***" : "не задан", to })
 
     if (!user || !pass || !to) {
       return NextResponse.json(
@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
     // Проверяем подключение к SMTP серверу
     try {
       await transporter.verify()
-      // console.log("SMTP подключение успешно")
+      console.log("SMTP подключение успешно")
     } catch (verifyError) {
-      // console.error("Ошибка проверки SMTP:", verifyError)
+      console.error("Ошибка проверки SMTP:", verifyError)
       return NextResponse.json(
         { error: `Ошибка подключения к SMTP серверу: ${verifyError.message}` },
         { status: 500 }

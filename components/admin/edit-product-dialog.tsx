@@ -134,7 +134,7 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
 
       onClose()
     } catch (error: any) {
-      // console.error("Error updating product:", error)
+      console.error("Error updating product:", error)
       alert(`Ошибка при обновлении товара: ${error.message || "Неизвестная ошибка"}`)
     } finally {
       setIsSubmitting(false)

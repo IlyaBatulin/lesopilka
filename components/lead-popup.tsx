@@ -138,15 +138,11 @@ export function LeadPopup() {
               <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
                 <div className="flex items-center">
                   <Phone size={16} className="mr-1" />
-                  <a href="tel:+74950779779" className="hover:text-green-600 transition-colors">
-                    +7 (495) 077-97-79
-                  </a>
+                  <span>+7 (495) 077-97-79</span>
                 </div>
                 <div className="flex items-center">
                   <Mail size={16} className="mr-1" />
-                  <a href="mailto:zakaz@vyborplus.ru" className="hover:text-green-600 transition-colors">
-                    zakaz@vyborplus.ru
-                  </a>
+                  <span>zakaz@vyborplus.ru</span>
                 </div>
               </div>
             </div>

@@ -9,10 +9,17 @@ import { Menu, ChevronRight, ChevronDown, AlertCircle, X } from "lucide-react"
 import { createClientSupabaseClient } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 
-import { Category, PartialCategory } from "@/lib/types"
+// Используем тот же тип Category, что и в header.tsx
+type Category = {
+  id: number
+  name: string
+  parent_id: number | null
+  description?: string | null
+  image_url?: string | null
+}
 
 type MobileNavProps = {
-  categories?: PartialCategory[]
+  categories?: Category[]
   menuIconClassName?: string
 }
 
