@@ -6,15 +6,7 @@ import Image from 'next/image'
 import { createClientSupabaseClient } from '@/lib/supabase'
 import { ArrowRight } from 'lucide-react'
 import { CategorySkeleton } from '@/components/ui/category-skeleton'
-
-type Category = {
-  id: number;
-  name: string;
-  description: string | null;
-  parent_id: number | null;
-  image_url: string | null;
-  position: number | null;
-}
+import { Category } from '@/lib/types'
 
 export default function HomeCategories() {
   const [categories, setCategories] = useState<Category[]>([])

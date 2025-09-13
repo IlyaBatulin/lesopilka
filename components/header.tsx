@@ -14,16 +14,7 @@ import { useCart } from "@/context/cart-context"
 import { CartDrawer } from "@/components/cart-drawer"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
-
-// Обновляем тип Category, чтобы он соответствовал типу в mobile-nav.tsx
-type Category = {
-  id: number
-  name: string
-  parent_id: number | null
-  description?: string | null
-  image_url?: string | null
-  position?: number | null
-}
+import { Category, PartialCategory } from "@/lib/types"
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -34,9 +25,9 @@ export default function Header() {
   const [isSearching, setIsSearching] = useState(false)
   const [showResults, setShowResults] = useState(false)
   const [showCatalog, setShowCatalog] = useState(false)
-  const [mainCategories, setMainCategories] = useState<Category[]>([])
-  const [subCategories, setSubCategories] = useState<Category[]>([])
-  const [sizes, setSizes] = useState<Category[]>([])
+  const [mainCategories, setMainCategories] = useState<PartialCategory[]>([])
+  const [subCategories, setSubCategories] = useState<PartialCategory[]>([])
+  const [sizes, setSizes] = useState<PartialCategory[]>([])
   const [activeMainCategory, setActiveMainCategory] = useState<number | null>(null)
   const [activeSubCategory, setActiveSubCategory] = useState<number | null>(null)
   const searchRef = useRef<HTMLDivElement>(null)

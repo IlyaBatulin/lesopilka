@@ -6,15 +6,7 @@ import Image from "next/image"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import { createClientSupabaseClient } from "@/lib/supabase"
 import { cn } from "@/lib/utils"
-
-interface Category {
-  id: number
-  name: string
-  description: string | null
-  parent_id: number | null
-  image_url: string | null
-  subcategories?: Category[]
-}
+import { Category } from "@/lib/types"
 
 export function SimplifiedNav() {
   const [rootCategories, setRootCategories] = useState<Category[]>([])
@@ -36,7 +28,7 @@ export function SimplifiedNav() {
           .select("count", { count: "exact", head: true })
 
         if (healthCheckError) {
-          console.error("Ошибка соединения с Supabase:", healthCheckError)
+          // console.error("Ошибка соединения с Supabase:", healthCheckError)
           setError("Не удалось подключиться к базе данных")
           setIsLoading(false)
           return
@@ -46,7 +38,7 @@ export function SimplifiedNav() {
         const { data, error } = await supabase.from("categories").select("*").order("name")
 
         if (error) {
-          console.error("Ошибка при загрузке категорий:", error)
+          // console.error("Ошибка при загрузке категорий:", error)
           setError("Не удалось загрузить категории")
           setIsLoading(false)
           return

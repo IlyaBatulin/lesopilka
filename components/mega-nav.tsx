@@ -6,15 +6,8 @@ import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import { createClientSupabaseClient } from "@/lib/supabase"
 import { cn } from "@/lib/utils"
+import { Category } from "@/lib/types"
 
-interface Category {
-  id: number
-  name: string
-  description: string | null
-  parent_id: number | null
-  image_url: string | null
-  subcategories?: Category[]
-}
 
 export function MegaNav() {
   const [categories, setCategories] = useState<Category[]>([])

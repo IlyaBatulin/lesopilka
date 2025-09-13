@@ -9,6 +9,18 @@ export interface Category {
   subcategories?: Category[]
 }
 
+// Частичный тип для случаев, когда нужны не все поля
+export interface PartialCategory {
+  id: number
+  name: string
+  description?: string | null
+  parent_id?: number | null
+  image_url?: string | null
+  created_at?: string
+  updated_at?: string
+  position?: number | null
+}
+
 export interface Product {
   id: number
   name: string

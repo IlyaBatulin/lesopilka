@@ -204,13 +204,17 @@ export default function Contacts() {
                   <div className="w-10 h-10 rounded-full bg-green-500/30 flex items-center justify-center">
                     <Phone className="h-5 w-5" />
                   </div>
-                  <span>+7 (495) 077-97-79</span>
+                  <a href="tel:+74950779779" className="hover:text-green-600 transition-colors">
+                    +7 (495) 077-97-79
+                  </a>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-green-500/30 flex items-center justify-center">
                     <Mail className="h-5 w-5" />
                   </div>
-                  <span>zakaz@vyborplus.ru</span>
+                  <a href="mailto:zakaz@vyborplus.ru" className="hover:text-green-600 transition-colors">
+                    zakaz@vyborplus.ru
+                  </a>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-green-500/30 flex items-center justify-center">

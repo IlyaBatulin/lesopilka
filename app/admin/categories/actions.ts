@@ -16,23 +16,23 @@ interface CategoryUpdateInput extends CategoryInput {
 
 export async function addCategory(category: CategoryInput) {
   const supabase = createServerSupabaseClient()
-  console.log("Adding category with data:", category)
+  // console.log("Adding category with data:", category)
 
   const { data, error } = await supabase.from("categories").insert([category]).select()
 
   if (error) {
-    console.error("Error adding category:", error)
+    // console.error("Error adding category:", error)
     throw new Error(`Failed to add category: ${error.message}`)
   }
 
-  console.log("Category added successfully:", data)
+  // console.log("Category added successfully:", data)
   revalidatePath("/admin/categories")
   return data
 }
 
 export async function updateCategory(category: CategoryUpdateInput) {
   const supabase = createServerSupabaseClient()
-  console.log("Updating category with data:", category)
+  // console.log("Updating category with data:", category)
 
   const { data, error } = await supabase
     .from("categories")
