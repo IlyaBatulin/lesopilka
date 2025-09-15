@@ -24,13 +24,14 @@ interface EditProductDialogProps {
 }
 
 export default function EditProductDialog({ product, onClose }: EditProductDialogProps) {
-  const [name, setName] = useState(product.name)
-  const [description, setDescription] = useState(product.description || "")
-  const [price, setPrice] = useState(product.price.toString())
-  const [imageUrl, setImageUrl] = useState(product.image_url || "")
-  const [categoryId, setCategoryId] = useState(product.category_id.toString())
-  const [unit, setUnit] = useState(product.unit)
-  const [stock, setStock] = useState(product.stock.toString())
+  // Безопасная инициализация состояния с проверками
+  const [name, setName] = useState(product?.name || "")
+  const [description, setDescription] = useState(product?.description || "")
+  const [price, setPrice] = useState(product?.price ? product.price.toString() : "0")
+  const [imageUrl, setImageUrl] = useState(product?.image_url || "")
+  const [categoryId, setCategoryId] = useState(product?.category_id ? product.category_id.toString() : "")
+  const [unit, setUnit] = useState(product?.unit || "шт")
+  const [stock, setStock] = useState(product?.stock ? product.stock.toString() : "0")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -39,7 +40,17 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
   const [uploadError, setUploadError] = useState<string | null>(null)
 
   // Характеристики товара в формате JSON
-  const [characteristics, setCharacteristics] = useState<Record<string, string>>(product.characteristics || {})
+  const [characteristics, setCharacteristics] = useState<Record<string, string>>(() => {
+    try {
+      if (product.characteristics && typeof product.characteristics === 'object') {
+        return product.characteristics as Record<string, string>
+      }
+      return {}
+    } catch (error) {
+      console.error('Ошибка при инициализации характеристик:', error)
+      return {}
+    }
+  })
   const [newCharKey, setNewCharKey] = useState("")
   const [newCharValue, setNewCharValue] = useState("")
 
@@ -105,6 +116,38 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
     setIsSubmitting(true)
     setUploadError(null)
 
+    // Проверяем, что товар существует
+    if (!product || !product.id) {
+      alert("Ошибка: товар не найден")
+      setIsSubmitting(false)
+      return
+    }
+
+    // Валидация данных на клиенте
+    if (!name.trim()) {
+      alert("Название товара не может быть пустым")
+      setIsSubmitting(false)
+      return
+    }
+
+    if (isNaN(Number.parseFloat(price)) || Number.parseFloat(price) < 0) {
+      alert("Цена должна быть положительным числом")
+      setIsSubmitting(false)
+      return
+    }
+
+    if (isNaN(Number.parseInt(stock)) || Number.parseInt(stock) < 0) {
+      alert("Количество на складе не может быть отрицательным")
+      setIsSubmitting(false)
+      return
+    }
+
+    if (!categoryId || isNaN(Number.parseInt(categoryId))) {
+      alert("Выберите категорию товара")
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       // Загружаем изображение, если оно выбрано
       let imageUrlToSave = imageUrl
@@ -129,13 +172,24 @@ export default function EditProductDialog({ product, onClose }: EditProductDialo
         category_id: Number.parseInt(categoryId),
         unit,
         stock: Number.parseInt(stock),
-        characteristics,
+        characteristics: characteristics || {},
       })
 
       onClose()
     } catch (error: any) {
       console.error("Error updating product:", error)
-      alert(`Ошибка при обновлении товара: ${error.message || "Неизвестная ошибка"}`)
+      const errorMessage = error.message || "Неизвестная ошибка"
+      alert(`Ошибка при обновлении товара: ${errorMessage}`)
+      
+      // Дополнительная информация для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Детали ошибки:", {
+          productId: product.id,
+          productName: product.name,
+          error: error,
+          stack: error.stack
+        })
+      }
     } finally {
       setIsSubmitting(false)
     }

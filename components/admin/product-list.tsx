@@ -292,7 +292,7 @@ function formatKey(key: string): string {
   try {
     // Проверяем, что key является строкой
     if (!key || typeof key !== 'string') {
-      return String(key || '')
+      return String(key || 'Неизвестно')
     }
 
     // Специальные переводы для английских ключей
@@ -336,14 +336,23 @@ function formatKey(key: string): string {
 }
 
 function formatValue(value: any): string {
-  if (typeof value === "object" && value !== null) {
-    if (Array.isArray(value)) {
-      return value.join(", ")
-    } else {
-      return Object.entries(value)
-        .map(([k, v]) => `${formatKey(k)}: ${v}`)
-        .join(", ")
+  try {
+    if (value === null || value === undefined) {
+      return 'Не указано'
     }
+    
+    if (typeof value === "object" && value !== null) {
+      if (Array.isArray(value)) {
+        return value.join(", ")
+      } else {
+        return Object.entries(value)
+          .map(([k, v]) => `${formatKey(k)}: ${v}`)
+          .join(", ")
+      }
+    }
+    return String(value)
+  } catch (error) {
+    console.error('Ошибка в formatValue:', error, 'value:', value)
+    return 'Ошибка отображения'
   }
-  return String(value)
 }
